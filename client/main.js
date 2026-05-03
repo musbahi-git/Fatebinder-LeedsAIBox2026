@@ -10,32 +10,37 @@ import { PointerLockControls } from 'three/addons/controls/PointerLockControls.j
 import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 
 // ─────────────────────────────────────────────────────────────
-//  CONFIG
+//  CONFIG — read from window.FATEBINDER_CONFIG (client/config.local.js)
+//  Keys MUST stay in client/config.local.js only.
 // ─────────────────────────────────────────────────────────────
-const CFG = window.FATEBINDER_CONFIG ?? {};
+const CFG               = window.FATEBINDER_CONFIG ?? {};
 const BROWSERPOD_API_KEY = CFG.BROWSERPOD_API_KEY ?? '';
 const GEMINI_API_KEY     = CFG.GEMINI_API_KEY ?? '';
 
+console.log('[Fatebinder] FATEBINDER_CONFIG:', CFG);
+console.log('[Fatebinder] BROWSERPOD_API_KEY present:', !!BROWSERPOD_API_KEY);
+console.log('[Fatebinder] GEMINI_API_KEY present:', !!GEMINI_API_KEY);
+
 if (!BROWSERPOD_API_KEY) {
-  console.warn('[Fatebinder] Missing BROWSERPOD_API_KEY — set it in client/config.local.js');
+  console.error('[Fatebinder] Set BROWSERPOD_API_KEY in client/config.local.js');
 }
 if (!GEMINI_API_KEY) {
-  console.warn('[Fatebinder] Missing GEMINI_API_KEY — set it in client/config.local.js');
+  console.error('[Fatebinder] Set GEMINI_API_KEY in client/config.local.js');
 }
 
 // ─────────────────────────────────────────────────────────────
-//  BROWSERPOD BOOT
+//  BROWSERPOD BOOT  — uses BROWSERPOD_API_KEY from above
 // ─────────────────────────────────────────────────────────────
 let fatePod     = null;
 let fateProcess = null;
 
 async function initFatePod() {
   if (fatePod) return fatePod;
-  console.log('[FATE POD] Booting BrowserPod…');
-  if (!BROWSERPOD_API_KEY) throw new Error('Missing BROWSERPOD_API_KEY');
+  console.log('[Fatebinder] Booting BrowserPod pod…');
+  if (!BROWSERPOD_API_KEY) throw new Error('BROWSERPOD_API_KEY not set — check client/config.local.js');
   const { BrowserPod } = await import('https://cdn.skypack.dev/@leaningtech/browserpod');
   fatePod = await BrowserPod.boot({ apiKey: BROWSERPOD_API_KEY });
-  console.log('[FATE POD] BrowserPod pod booted');
+  console.log('[Fatebinder] BrowserPod pod booted');
   return fatePod;
 }
 
