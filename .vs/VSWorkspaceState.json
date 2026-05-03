@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\server",
+    "\\server\\src",
+    "\\server\\src\\game",
+    "\\server\\src\\world"
+  ],
+  "SelectedNode": "\\server\\src\\world\\chunk.rs",
+  "PreviewInSolutionExplorer": false
+}
