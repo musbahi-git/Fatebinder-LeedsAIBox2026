@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo check)",
+      "Bash(cargo run)",
+      "Bash(cargo build --release)",
+      "Bash(\"C:/Users/Ahmad/Repositories/Hackathons/Fatebinder-LeedsAIBox2026/target/release/fatebinder-server.exe\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Format-Table -AutoSize\")",
+      "Bash(powershell -Command \"Get-Process -Id 25476 | Select-Object ProcessName, Id\")"
+    ]
+  }
+}

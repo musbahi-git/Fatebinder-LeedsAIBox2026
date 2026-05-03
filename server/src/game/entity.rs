@@ -15,7 +15,7 @@ pub enum EntityType {
 pub struct Entity {
 	pub id: Uuid,
 	pub entity_type: EntityType,
-	pub position: [f32, 3],
+	pub position: [f32; 3],
 	pub health: u32,
 }
 

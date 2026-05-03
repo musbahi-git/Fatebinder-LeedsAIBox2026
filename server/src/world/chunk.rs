@@ -89,14 +89,10 @@ impl Chunk {
 
 
 					let density = perlin.get([
-
 						world_x / 32.0,
 						world_y / 32.0,
 						world_z / 32.0,
-					)];
-
-
-
+					]);
 
 					voxels[lx][ly][lz] = if density > 0.3 {
 						if density > 0.7 {
@@ -105,27 +101,27 @@ impl Chunk {
 							} else {
 								Voxel::ore()
 							}
-						}else {
+						} else {
 							Voxel::wall()
 						}
 					} else {
 						Voxel::empty()
-
-				};
+					};
+				}
 			}
 		}
+
+		Self { x, y, z, voxels }
 	}
 
-	Self { x, y, z, voxels }
-}
-pub fn get_voxel(&self, x: usize, y: usize, z: usize) -> Option<Voxel> {
+	pub fn get_voxel(&self, x: usize, y: usize, z: usize) -> Option<Voxel> {
 	if x < CHUNK_SIZE && y < CHUNK_SIZE && z < CHUNK_SIZE {
 		Some(self.voxels[x][y][z])
 	} else {
 		None
 	}
 }
-pub fn set_voxel(&mut self, x: usize, y: usize, z: usize, voxel: Voxel) {
+pub fn set_voxel(&mut self, x: usize, y: usize, z: usize, voxel: Voxel) -> bool {
 	if x < CHUNK_SIZE && y < CHUNK_SIZE && z < CHUNK_SIZE {
 		self.voxels[x][y][z] = voxel;
 		true

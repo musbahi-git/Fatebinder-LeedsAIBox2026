@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fatebinder 2066 - Prototype</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Orbitron', monospace, sans-serif; color: white; }
+        #instructions {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(0, 0, 0, 0.8); cursor: pointer; z-index: 10;
+        }
+        #hud { position: absolute; top: 10px; left: 10px; z-index: 5; pointer-events: none; text-shadow: 1px 1px 0 #000; }
+        #crosshair {
+            position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
+            background: white; border-radius: 50%; transform: translate(-50%, -50%);
+            z-index: 5; pointer-events: none; mix-blend-mode: difference;
+        }
+        .hud-stat { font-size: 20px; font-weight: bold; margin-bottom: 5px; color: #ff6600; }
+        
+        /* Fate Modal Styles */
+        #fate-modal {
+            display: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 100;
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+        #fate-modal.show { display: flex; }
+        .fate-box {
+            width: 60%; max-width: 700px; background: rgba(68, 0, 0, 0.9);
+            border: 3px solid #ff6600; padding: 30px; border-radius: 10px;
+            text-align: center;
+        }
+        .fate-question { font-size: 18px; margin-bottom: 30px; line-height: 1.6; color: #ffcc99; }
+        .fate-choices { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .fate-btn {
+            padding: 12px 16px; font-size: 15px; font-weight: bold;
+            background: #ff6600; color: #000; border: none; cursor: pointer; border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .fate-btn:hover { background: #ff9933; transform: scale(1.05); }
+        
+        /* Echo Event Notification */
+        #echoNotif {
+            position: absolute; bottom: 20px; left: 20px; z-index: 8;
+            background: rgba(255, 102, 0, 0.8); padding: 15px; border-radius: 5px;
+            max-width: 300px; font-size: 14px; animation: slideIn 0.5s;
+        }
+        @keyframes slideIn { from { transform: translateX(-400px); } to { transform: translateX(0); } }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="hud">
+        <div class="hud-stat" id="hud-room">Room: connecting...</div>
+        <div class="hud-stat" id="hud-hp">HP: 100</div>
+        <div class="hud-stat" id="hud-ore">Ore: 0</div>
+        <div class="hud-stat" id="hud-ping">Ping: -- ms</div>
+        <div class="hud-stat" id="hud-msg" style="color:red;"></div>
+    </div>
+    
+    <div id="crosshair"></div>
+
+    <div id="fate-modal">
+        <div class="fate-box">
+            <div class="fate-question" id="fate-question"></div>
+            <div class="fate-choices" id="fate-choices"></div>
+            <textarea
+                id="fate-answer"
+                placeholder="Type your answer to fate here..."
+                style="width:100%;height:80px;margin-top:8px;background:#1a0000;color:#ffcc99;border:1px solid #ff6600;border-radius:4px;font-family:inherit;font-size:14px;padding:8px;resize:none;"
+            ></textarea>
+            <button class="fate-btn" id="fate-submit" style="margin-top:12px;">Submit Answer</button>
+        </div>
+    </div>
+
+    <div id="echoNotif"></div>
+
+    <div id="instructions">
+        <h1 style="color:#ff6600">FATB_NDER</h1>
+        <p>Click to Play</p>
+        <p>WASD to Move | Mouse to Look | Left Click to Mine</p>
+    </div>
+
+    <!-- Local config: keys live here, NEVER commit this file -->
+    <script src="./client/config.local.js"></script>
+    <script type="module" src="./client/main.js"></script>
+</head>
+
+        </body>
+</html>

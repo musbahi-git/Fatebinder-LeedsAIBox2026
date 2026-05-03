@@ -1,5 +1,7 @@
 # Fatebinder: A 3D Multiplayer Roguelike Hackathon Game
 
+`This hackathon was plagued by some of the worst case scenarios, my laptop breaking and the university R/W filesystem thinking I was going to manifest ongoing fued with eduroam. Thankfully I had a desktop at home which I could use through the night. I have never been prouder of a hackathon submission.`
+
 ## Overview
 
 Fatebinder 2066 is a 3D multiplayer roguelike game, built with:

@@ -27,7 +27,7 @@ nalgebra-glm = "0.2"
 
 # Asyncer utility
 futures = "0.3"
-uuid = { version = "1.1", features = ["v4"] }
+uuid = { version = "1.1", features = ["v4", "serde"] }
 
 # Data logging
 tracing = "0.1"
@@ -36,4 +36,5 @@ tracing-subscriber = "0.3"
 # Error handling
 thiserror = "1.0"
 anyhow = "1.0"
+tokio-stream = "0.1.18"
 

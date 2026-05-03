@@ -1,0 +1,7 @@
+(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+player::_::<impl Deserialize<'de> for Player>::deserialize::__Field
+entity::_::<impl Deserialize<'de> for Entity>::deserialize::__Field
+entity::_::<impl Deserialize<'de> for EntityType>::deserialize::__Field

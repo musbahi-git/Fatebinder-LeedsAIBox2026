@@ -7,8 +7,8 @@ use uuid::Uuid;
 pub struct Player {
 	pub id: Uuid,
 	pub name: String,
-	pub position: [f32; 3]
-	pub rotation: [f32; 2]
+	pub position: [f32; 3],
+	pub rotation: [f32; 2],
 	pub health: u32,
 	pub ore_count: u32,
 }
