@@ -81,7 +81,7 @@ pub async fn run() -> Result<()> {
         }
     });
 
-    let addr = "0.0.0.0:3000";
+    let addr = "0.0.0.0:4000";
     let listener = TcpListener::bind(&addr).await?;
     println!("Listening on: {}", addr);
 

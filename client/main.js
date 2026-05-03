@@ -329,7 +329,11 @@ document.addEventListener('keyup', e => {
 //  WEBSOCKET + MESSAGE DISPATCHER
 // ─────────────────────────────────────────────────────────────
 function connect() {
-  ws = new WebSocket('ws://localhost:3000');
+  // Inside BrowserPod the portal hostname exposes both ports.
+    // Client is served on port 3000 (portal), server listens on port 4000.
+    const wsHost = window.location.hostname;
+    const wsUrl  = `wss://${wsHost}:4000`;
+    ws = new WebSocket(wsUrl);
 
   ws.onopen = () => {
     console.log('[WS] Connected to server');

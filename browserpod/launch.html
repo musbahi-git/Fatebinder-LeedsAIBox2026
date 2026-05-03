@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fatebinder — BrowserPod Launcher</title>
+<style>
+  body { background:#111; color:#ff6600; font-family:monospace; padding:2rem; }
+  h1 { color:#fff; }
+  button { background:#ff6600; color:#000; padding:12px 24px; font-size:16px;
+           border:none; cursor:pointer; margin:8px 0; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  pre { background:#1a1a1a; padding:1rem; overflow-x:auto; border-radius:4px;
+        max-height:400px; overflow-y:scroll; }
+  .err { color:#ff4444; }
+  .ok  { color:#44ff88; }
+</style>
+</head>
+<body>
+<h1>Fatebinder — BrowserPod Launcher</h1>
+<p>Boots the full game inside a BrowserPod: Rust WS server (4000) + client dev-server (3000) + Gemini AI.</p>
+
+<button id="btn-launch">Launch Fatebinder in BrowserPod</button>
+<pre id="log">Click the button to begin...</pre>
+
+<script type="module">
+const CFG = window.FATEBINDER_CONFIG ?? {};
+const API_KEY = CFG.BROWSERPOD_API_KEY;
+
+const logEl = document.getElementById('log');
+function log(msg, type='') { logEl.textContent += `\n[${new Date().toLocaleTimeString()}] ${msg}`; logEl.scrollTop = logEl.scrollHeight; }
+
+document.getElementById('btn-launch').addEventListener('click', async () => {
+  if (!API_KEY) { log('ERROR: Set BROWSERPOD_API_KEY in client/config.local.js', 'err'); return; }
+  const btn = document.getElementById('btn-launch');
+  btn.disabled = true;
+  btn.textContent = 'Booting…';
+  log('Importing BrowserPod SDK…');
+
+  try {
+    const { BrowserPod } = await import('https://cdn.skypack.dev/@leaningtech/browserpod');
+    log('Booting pod…');
+    const pod = await BrowserPod.boot({ apiKey: API_KEY });
+    log('Pod booted! ✓');
+
+    // --- Build Rust server ---
+    log('Building Rust server (cargo build --release in /app/server)…');
+    await pod.run('bash', ['-lc', 'cd /app/server && cargo build --release 2>&1'], {});
+    log('Rust build complete.');
+
+    // --- Copy client assets into pod (simple approach: create each file) ---
+    log('Writing client index.html into pod…');
+    const indexHtml = await fetch('/client/index.html').then(r => r.text()).catch(() => null);
+    if (indexHtml) {
+      await pod.createFile('/app/client/index.html', 'utf-8').then(f => f.write(indexHtml).then(() => f.close()));
+    }
+
+    // --- Start Rust server on port 4000 ---
+    log('Starting Rust WebSocket server on 0.0.0.0:4000…');
+    const serverProc = await pod.run('bash', ['-lc',
+      'cd /app/server && RUST_LOG=info ./target/release/fatebinder-server 2>&1'], {});
+
+    // --- Open Portal on port 3000 ---
+    log('Opening BrowserPod Portal on port 3000…');
+    const portal = await pod.openPortal(3000);
+    log('Portal URL: ' + portal.url, 'ok');
+
+    log('\n=== READY ===');
+    log('Game client: ' + portal.url);
+    log('WebSocket: wss://' + window.location.hostname + ':4000 (in-pod use)');
+    log('\nGive the Portal URL to judges. The Rust server + Gemini AI run inside the same pod.');
+    btn.textContent = 'Pod Running!';
+  } catch(e) {
+    log('ERROR: ' + e.message, 'err');
+    console.error(e);
+    btn.disabled = false;
+    btn.textContent = 'Retry Launch';
+  }
+});
+</script>
+</body>
+</html>
